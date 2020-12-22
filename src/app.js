@@ -5,6 +5,7 @@ import pkg from '../package.json';
 import authRoutes from './routes/auth.routes'
 import userRoutes from './routes/user.routes'
 import carRouter from './routes/car.routes'
+import orderRouter from './routes/order.routes'
 import {createRoles} from './libs/initialSetup'
 
 const app = express();
@@ -37,5 +38,6 @@ app.use(cors());
 app.use('/api/auth',authRoutes)
 app.use('/api/users',userRoutes )
 app.use('/api/cars',carRouter)
+app.use('/api/order',orderRouter)
 
 export default app;
