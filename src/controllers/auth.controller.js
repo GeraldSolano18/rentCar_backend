@@ -12,7 +12,7 @@ export const register = async (req, res)=>{
       email,
       password: await User.encryptPassword(password)
   });
-
+ //if you don't send roles: []
   //register roles from body 
   if(roles){
       const foundRoles = await Role.find({name:{$in: roles}})
@@ -27,12 +27,24 @@ export const register = async (req, res)=>{
  const savedUser= await newUser.save();
  console.log(savedUser)
 
-
-
-//CREATE TOKEN
  const token= jwt.sign({id:savedUser._id}, config.SECRET, {
      expiresIn:86400 //seg 24 hrs
  })
 
   res.status(200).json({token})
+}
+
+//LOGIN
+export const  login = async (req, res)=>{ 
+    const {email,password} = req.body
+    const userFound = await User.findOne({email:email}).populate("roles");
+    if(!userFound) return res.status(400).json({token:null, message: "ERROR User not found"});
+    const matchPassword = await User.comparePassword(password, userFound.password);
+
+    if(!matchPassword) return res.status(401).json({token:null, message:"ERROR invalid password"})
+ 
+    const token= jwt.sign({id:userFound._id, username:userFound.username}, config.SECRET, {
+        expiresIn:86400 //seg 24 hrs
+    })
+    res.json({token})
 }
