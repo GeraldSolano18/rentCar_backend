@@ -26,7 +26,7 @@ export const  createUser = async (req, res)=>{
         newUser.roles= foundRoles.map(role =>role._id)
        
     }else{
-        const role = await Role.findOne({name:"user"})
+        const role = await Role.findOne({name:"client"})
         newUser.roles = [role._id]
     }
 

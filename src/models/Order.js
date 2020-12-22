@@ -2,6 +2,8 @@ import {Schema, model} from 'mongoose'
 
 const orderSchema = new Schema({
     description: String,
+    date: Number,
+    dateFinalize: Number,
     user:{
         type: Schema.Types.ObjectId,
         ref:'User'
