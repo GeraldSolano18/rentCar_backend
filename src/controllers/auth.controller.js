@@ -5,11 +5,14 @@ import Role from '../models/Role';
 
 //REGISTER NEW USER 
 export const register = async (req, res)=>{ 
-  const {username, email, password,roles} = req.body;
+  const {username, email, password,name,phone,  address, roles} = req.body;
 
  const newUser = new User({
-      username,
-      email,
+    username,
+    name,
+    phone,
+    address,
+    email,
       password: await User.encryptPassword(password)
   });
  //if you don't send roles: []

@@ -13,10 +13,13 @@ export const getUserById = async (req, res) => {
 };
 
 export const  createUser = async (req, res)=>{
-    const { username, email, password, roles}= req.body;
+    const { username, email, password,name,phone,  address, roles}= req.body;
 
     const newUser = new User({
         username,
+        name,
+        phone,
+        address,
         email,
         password: await User.encryptPassword(password)
     });

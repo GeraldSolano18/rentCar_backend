@@ -37,3 +37,6 @@ export const getOrdersByUser = async (req, res) =>{
     const mapOrders= foundOrders.map(obj =>obj.car)     
     res.status(200).json(mapOrders);
 }
+
+//reports 
+//validate schemas 
