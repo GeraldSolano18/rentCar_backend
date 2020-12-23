@@ -1,29 +1,46 @@
 import { Schema, model } from "mongoose";
+
 import bcrypt from "bcryptjs";
+
+const {isEmail} = require('validator');
 
 const userSchema = new Schema(
   {
     username: {
       type: String,
+      required:[true, "please enter an Username"],
       unique: true,
+      lowercase:true,  
+      minlength:[3, 'Minimum username length is 3 characters']
+
     },
     name: {
         type: String,
+        required:[true, "please enter an Name"],
         unique: true,
+        lowercase:true,  
+        minlength:[3, 'Minimum name length is 3 characters']
     },
     email: {
       type: String,
+      required:[true, "please enter an Email"],
       unique: true,
+      validate: [isEmail,'please enter a valid email']
+      
     },
     password: {
       type: String,
-      unique: true,
+      required:[true, "please enter an password"],
     },
     phone: {
       type: Number,
+      required:[true, "please enter an phone number"],  
+      minlength:[8, 'Minimum password length is 8 characters']
     },
     address: {
       type: String,
+      required:[true, "please enter an address"],
+      minlength:[10, 'Minimum password length is 10 characters']
     },
 
     roles: [

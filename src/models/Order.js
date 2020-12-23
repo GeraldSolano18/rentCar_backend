@@ -1,9 +1,18 @@
 import {Schema, model} from 'mongoose'
 
 const orderSchema = new Schema({
-    description: String,
-  
-    dateFinalize: Number,
+    orderState:Boolean,
+    description: {
+        type: String,
+        required:[true, "please enter an Name"],
+    },
+    created: { 
+    type: Date, 
+    default: Date.now },
+    dateFinalize: { 
+        type: Date, 
+        required:[true, "please enter an date"],
+       },
     user:{
         type: Schema.Types.ObjectId,
         ref:'User'

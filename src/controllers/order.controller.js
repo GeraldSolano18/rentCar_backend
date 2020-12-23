@@ -38,5 +38,34 @@ export const getOrdersByUser = async (req, res) =>{
     res.status(200).json(mapOrders);
 }
 
-//reports 
-//validate schemas 
+//accept order el Car.state = 1 (1 refers to a car in use)
+// AND orderState will be true
+//accepting an order will change the status of the car to not available
+
+export const acceptOrder = async (req, res) =>{
+  const { orderId } = req.params;
+  const updatedOrder= await Order.findByIdAndUpdate(orderId,{orderState:true},{
+    new:true
+});
+  await Car.findByIdAndUpdate(updatedOrder.car,{state:1},{
+    new:true
+});
+
+res.status(200).json(updatedOrder);
+}
+
+
+//finalize order the Car.state = 0 AND orderState will be true
+//accepting an order will change the status of the car to not available
+
+export const finalizeOrder = async (req, res) =>{
+  const { orderId } = req.params;
+  const updatedOrder= await Order.findByIdAndUpdate(orderId,{orderState:false},{
+    new:true
+});
+  await Car.findByIdAndUpdate(updatedOrder.car,{state:0},{
+    new:true
+});
+
+res.status(200).json(updatedOrder);
+}

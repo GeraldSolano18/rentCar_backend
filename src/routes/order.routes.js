@@ -9,5 +9,8 @@ router.get('/user/:userId',orderController.getOrdersByUser)
 
 router.post("/car/:carId",authJwt.verifyToken,orderController.createOrder);
 
+router.put('/:orderId',[authJwt.verifyToken,authJwt.isModerator],orderController.acceptOrder)
+
+router.put('/finalize/:orderId',[authJwt.verifyToken,authJwt.isModerator],orderController.finalizeOrder)
 
 export default router;

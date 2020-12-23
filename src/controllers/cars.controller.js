@@ -1,5 +1,10 @@
 import Car from "../models/Car";
 
+
+const handleError = (err) =>{
+  console.log(err.message, err.code)
+}
+
 //this endpoint gets all cars
 export const getCars = async (req, res) => {
   const cars = await Car.find();
@@ -14,6 +19,7 @@ export const getCarrById = async (req, res) => {
 
 //this endpoint create a car
 export const createCar = async (req, res) => {
+try {
   const { brand, model, year, priceForDay, state } = req.body;
   const newCar = new Car({
     brand,
@@ -23,7 +29,11 @@ export const createCar = async (req, res) => {
     state,
   });
   const savedCar = await newCar.save();
-  res.status(200).json(savedCar);
+  res.status(200).json(savedCar); 
+} catch (error) {
+  handleError(error)
+  res.status(400).json(error); 
+}
 };
 
 //this endpoint updates a car

@@ -5,36 +5,40 @@ import Role from '../models/Role';
 
 //REGISTER NEW USER 
 export const register = async (req, res)=>{ 
-  const {username, email, password,name,phone,  address, roles} = req.body;
+try {
+    const {username, email, password,name,phone,  address, roles} = req.body;
 
- const newUser = new User({
-    username,
-    name,
-    phone,
-    address,
-    email,
-      password: await User.encryptPassword(password)
-  });
- //if you don't send roles: []
-  //register roles from body 
-  if(roles){
-      const foundRoles = await Role.find({name:{$in: roles}})
-      newUser.roles= foundRoles.map(role =>role._id)
-  
-      //set role "client" by defect
-  }else{
-      const role = await Role.findOne({name:"client"})
-      newUser.roles = [role._id]
-  }
-
- const savedUser= await newUser.save();
- console.log(savedUser)
-
- const token= jwt.sign({id:savedUser._id}, config.SECRET, {
-     expiresIn:86400 //seg 24 hrs
- })
-
-  res.status(200).json({token})
+    const newUser = new User({
+       username,
+       name,
+       phone,
+       address,
+       email,
+         password: await User.encryptPassword(password)
+     });
+    //if you don't send roles: []
+     //register roles from body 
+     if(roles){
+         const foundRoles = await Role.find({name:{$in: roles}})
+         newUser.roles= foundRoles.map(role =>role._id)
+     
+         //set role "client" by defect
+     }else{
+         const role = await Role.findOne({name:"client"})
+         newUser.roles = [role._id]
+     }
+   
+    const savedUser= await newUser.save();
+    console.log(savedUser)
+   
+    const token= jwt.sign({id:savedUser._id}, config.SECRET, {
+        expiresIn:86400 //seg 24 hrs
+    })
+   
+     res.status(200).json({token}) 
+} catch (error) {
+    res.status(400).json(error.message)
+}
 }
 
 //LOGIN
